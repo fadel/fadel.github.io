@@ -7,7 +7,7 @@
   <title>Convolution demo</title>
   <script src="js/umbrella.min.js"></script>
   <script src="https://d3js.org/d3.v6.min.js"></script>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic"> 
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.0/milligram.css">
   <style type="text/css">
@@ -18,8 +18,6 @@
         --bg-color: #f2f5fa;
         --field-color: #e5e9f0;
         --padding-color: #d8dee9;
-        --tooltip-color-bubble: #a8c9ec; /*lightblue*/
-        --tooltip-color-bubble-font: #556bab; /*middleblue*/
       }
     }
 
@@ -30,8 +28,6 @@
         --bg-color: #2e3440;
         --field-color: #3b4252;
         --padding-color: #4c566a;
-        --tooltip-color-bubble: #a8c9ec; /*lightblue*/
-        --tooltip-color-bubble-font: #556bab; /*middleblue*/
       }
     }
 
@@ -39,7 +35,10 @@
       --input-color: #5e81ac; /* blue */
       --filter-color: #bf616a; /* red */
       --output-color: #a3be8c; /* green */
-      --tooltip-with: 20rem;
+      --tooltip-color-bubble: #a8c9ec; /*lightblue*/
+      --tooltip-color-bubble-text: #556bab; /*middleblue*/
+      --tooltip-width-min: 15rem;
+      --tooltip-width-max: 20rem;
     }
 
     body {
@@ -72,11 +71,11 @@
       -webkit-appearance: none;
       background: transparent;
     }
- 
+
     input[type=range]:focus {
       outline: none;
     }
- 
+
     input[type=range]::-moz-range-track {
       background: var(--field-color);
       height: 0.5rem;
@@ -87,7 +86,7 @@
       height: 0.5rem;
       background: var(--field-color);
     }
- 
+
     input[type=range]::-moz-range-thumb {
       width: 1.6rem;
       height: 1.6rem;
@@ -172,16 +171,19 @@
     .input-cell:hover, .padding-cell:hover, .filter-cell:hover, .output-cell:hover, .cell-hover {
       opacity: 1.0;
     }
-    .dflex {
+
+    label.tooltip {
       display: flex;
-    }
-    /* Tooltip container */
-    .tooltip {
       position: relative;
+    }
+
+    /* Question mark bubble */
+    label.tooltip::before {
+      content: "?";
       margin-top: 0.2rem;
-      margin-left: 0.7rem;
+      margin-right: 0.7rem;
       font-size: 1.3rem;
-      color: var(--tooltip-color-bubble-font);
+      color: var(--tooltip-color-bubble-text);
       background-color: var(--tooltip-color-bubble);
       width: 2.0rem;
       height: 2.0rem;
@@ -189,37 +191,34 @@
       text-align: center;
     }
 
-    /* Tooltip text */
-    .tooltip .tooltiptext {
+    label.tooltip div {
+      font-weight: normal;
       visibility: hidden;
-      width: var(--tooltip-with);
+      min-width: var(--tooltip-width-min);
+      max-width: var(--tooltip-width-max);
       font-size: 1.2rem;
       background-color: var(--field-color);
       color: var(--text-color);
-      text-align: center;
-      padding: 0.5rem 0;
-      border-radius: 0.6rem;
-    
-      /* Position the tooltip text - see examples below! */
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+
+      /* Position the tooltip text */
       position: absolute;
       z-index: 1;
       bottom: 100%;
-      left: 50%;
-      margin-bottom: 0.4rem;
-      margin-left: calc(
-        var(--tooltip-with)   * -0.3
-        ); /* Use ~30% of the width */
+      left: 0%;
+      margin-bottom: 0.5rem;
     }
-        
-    /* Show the tooltip text when you mouse over the tooltip container */
-    .tooltip:hover .tooltiptext {
+
+    label.tooltip:hover div {
       visibility: visible;
-}
-    .tooltip .tooltiptext::after {
-      content: " ";
+    }
+
+    label.tooltip div::after {
+      content: "";
       position: absolute;
-      top: 100%; /* At the bottom of the tooltip */
-      left: 30%;
+      top: 100%;
+      left: 1.0rem; /* half width of bubble */
       margin-left: -0.5rem;
       border-width: 0.5rem;
       border-style: solid;
@@ -267,22 +266,16 @@
             <input type="range" min="0" max="8" value="0" id="padding">
           </div>
           <div class="column">
-            <label for="dilation" class="dflex">
+            <label for="dilation" class="tooltip">
               <span>Dilation</span>
-              <div class="tooltip">
-                <span>?</span>
-                <span class="tooltiptext">How far apart individual filter elements are from each other</span>
-              </div>
+              <div>How far apart individual filter elements are from each other</div>
             </label>
             <input type="range" min="1" max="8" value="1" id="dilation">
           </div>
           <div class="column">
-            <label for="stride" class="dflex">
-              <span>Stride </span>
-              <div class="tooltip">
-                <span>?</span>
-                <span class="tooltiptext">The number of elements by which the filter is displaced</span>
-              </div>
+            <label for="stride" class="tooltip">
+              <span>Stride</span>
+              <div>The number of elements by which the filter is displaced</div>
             </label>
             <input type="range" min="1" max="8" value="1" id="stride">
           </div>

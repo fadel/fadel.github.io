@@ -1,6 +1,7 @@
 ## Research
 
 My main research interests are on unsupervised learning, particularly with structured (relational) representations.
+During my PhD, I worked on problems ranging from temporal graphs to generative modeling.
 Prior to my PhD research, my research interests focused on data visualization.
 
 * [dblp](https://dblp.uni-trier.de/pers/hd/f/Fadel:Samuel_G=)
